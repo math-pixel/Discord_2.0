@@ -1,0 +1,86 @@
+<div id="chat">
+	<div id="chat-messages">
+
+	<form id="chat-form" method="post">
+		<input type="text" name="message" placeholder="Enter a message..." maxlength="500" autocomplete="off">
+		<button type="submit">Send</button>
+ 	</form>
+</div>
+
+<script>
+//websocket
+    //CHANGE DOMAIN AND PORT VV
+    var ws_uri = "ws://192.168.0.0:1000";
+    var websocket = new WebSocket(ws_uri);
+
+//on websocket open
+websocket.onopen = function(event) {
+	MessageAdd('<div class="message green">You have entered the chat room.</div>');
+};
+
+//on websocket close
+websocket.onclose = function(event) {
+	MessageAdd('<div class="message blue">You have been disconnected.</div>');
+};
+
+//on websocket error
+websocket.onclose = function(event) {
+	MessageAdd('<div class="message blue">You have been disconnected.</div>');
+};
+
+
+//receive and display chat or something idk :D
+websocket.onmessage = function(event) {
+	var data = JSON.parse(event.data);
+
+	if (data.type == "message") {
+		MessageAdd('<div class="message">' + data.username + ': ' + data.message + '</div>');
+ 	}
+};
+
+// username / pseudo
+function Username() {
+	var username = window.prompt("Enter your username:", "");
+	
+	if (username.toString().length > 2) {
+		localStorage.setItem("username", username);
+	}
+	else {
+		alert("Your username must be at least two characters.");
+		Username();
+	}
+}
+
+Username();
+
+//submitting form data with websocket
+document.getElementById("chat-form").addEventListener("submit", function(event) {
+	event.preventDefault();
+
+	var message_element = document.getElementsByTagName("input")[0];
+	var message = message_element.value;
+
+	if (message.toString().length) {
+		var username = localStorage.getItem("username");
+		
+		var data = {
+			type: "message",
+			username: username,
+			message: message
+		};
+
+		websocket.send(JSON.stringify(data));
+		message_element.value = "";
+	}
+}, false);
+
+//add message or sum :D
+function MessageAdd(message) {
+	var chat_messages = document.getElementById("chat-messages");
+
+	chat_messages.insertAdjacentHTML("beforeend", message);
+	chat_messages.scrollTop = chat_messages.scrollHeight;
+}
+
+
+</script>

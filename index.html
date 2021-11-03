@@ -1,0 +1,28 @@
+<html><body><input type="text" id="name" name="name" required
+       minlength="4" >
+       <button type="button" id="submitButton" onclick="submitFunc()">submit</button>
+
+</body></html>
+
+
+<br>
+<script>
+  
+  /*function submitFunc() {
+    let messageContainer = document.getElementById("name").value;
+       document.write(messageContainer);
+       return 
+  }
+*/
+
+  // En dessous sert a detecter la touche entré et activer le boutton avec id="submitButton"
+       var input = document.getElementById("name");
+
+       input.addEventListener("keyup", function(event) {
+              if(event.keyCode === 13) {
+                     document.getElementById("submitButton").click();
+              }
+       })
+
+
+</script>
