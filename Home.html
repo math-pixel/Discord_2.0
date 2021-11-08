@@ -120,6 +120,14 @@
                      document.getElementById("submitButton").click();
               }
        })
+    
+    var input = document.getElementById("name");
+
+       input.addEventListener("keyup", function(event) {
+              if(event.keyCode === 13) {
+                     document.getElementById("submitButton").click();
+              }
+       })
 
 
 
