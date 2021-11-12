@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
+const chalk = require('chalk');
 
 const port = 3000;
 const server = http.createServer(express);
