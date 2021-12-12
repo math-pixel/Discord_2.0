@@ -22,9 +22,23 @@
     let ws;
 
     function showMessage(message) {
+    	console.log(message)
       messages.textContent += `\n\n${message}`;
       messages.scrollTop = messages.scrollHeight;
       messageBox.value = '';
+    }
+
+    function showMessageServer(msg){
+    	console.log(msg);
+    	if (msg.data instanceof Blob) {
+    		reader = new FileReader();
+    		reader.onload = () => {
+            	console.log("Result: " + reader.result);
+        	};
+        	reader.readAsText(msg.data);
+    	}else {
+        	console.log("Result: " + msg.data);
+    	}
     }
 
     function init() {
@@ -34,6 +48,7 @@
       }
 
       ws = new WebSocket('ws://localhost:3000');
+      
       ws.onopen = () => {
         console.log('Connection opened!');
       }
@@ -48,7 +63,6 @@
         showMessage("No WebSocket connection :(");
         return ;
       }
-
       ws.send(messageBox.value);
       showMessage(messageBox.value);
     }
@@ -56,7 +70,9 @@
     $('#messageBox').keypress(function(event) {
         if(event.keyCode === 13) {
             ws.send(messageBox.value);
+            console.log(messageBox);
             showMessage(messageBox.value);
+            
         } else { return };
     })
 
