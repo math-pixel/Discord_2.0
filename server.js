@@ -4,8 +4,21 @@ const WebSocket = require('ws');
 const { MongoClient } = require('mongodb');
 const chalk = require('chalk');
 const mongoURL = 'mongodb://localhost:3001';
+const mongoose = require('mongoose');
 const client = new MongoClient(mongoURL);
 const nameDB = 'nameDatabase';
+const { Schema } = mongoose;
+
+const messageSchema = new Schema({
+    title: String,
+    author: String,
+    body: String,
+    date: { type: Date, default: Date.now },
+    hidden: Boolean
+})
+
+var sentMsg = mongoose.model('Message', {name: String, message: String});
+
 
 async function main() {
     await client.connect;
