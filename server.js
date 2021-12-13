@@ -1,6 +1,19 @@
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
+const { MongoClient } = require('mongodb');
+const chalk = require('chalk');
+const mongoURL = 'mongodb://localhost:3001';
+const client = new MongoClient(mongoURL);
+const nameDB = 'nameDatabase';
+
+async function main() {
+    await client.connect;
+    console.log('['+ chalk.red('+') + chalk.reset('] Connected'));
+    const db = client.db(nameDB);
+    const collection = db.collection('names');
+}
+    main().then(console.log).catch(console.error).finally(() => client.close);
 //const chalk = require('chalk');
 
 const port = 3000;
